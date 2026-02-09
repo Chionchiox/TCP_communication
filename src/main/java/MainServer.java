@@ -5,23 +5,40 @@ import java.net.Socket;
 public class MainServer {
     public static void main(String[] args) {
         int porta = 1234;
+        Server server = null;
 
         try
         {
-            Server server = new Server(porta);
+            server = new Server(porta);
             server.avvia();
-            Socket socket = server.attendi();
 
-            System.out.println(socket.getInetAddress().getHostName());
+            Socket socket = server.attendi();
+            Colori.PRINT_MESSAGE("CLIENT CONNESSO: " + socket.getInetAddress().getHostName());
+
+            while(true) {
+                String msg = server.leggi();
+
+                if(msg == null || msg.equalsIgnoreCase("exit"))
+                    break;
+
+                Colori.PRINT_COMUNICATION("Ricevuto messaggio: " + msg);
+                server.scrivi("Ho ricevuto " + msg);
+            }
+
+            server.chiudi();
+
         }catch (BindException e)
         {
-            Colori.PRINT_ERROR(e.getMessage());
+            Colori.PRINT_ERROR("Porta già occupata");
             System.exit(1);
         }
         catch (IOException e)
         {
-            Colori.PRINT_ERROR(e.getMessage());
-            System.exit(0);
+            Colori.PRINT_ERROR("Errore I/O: " + e.getMessage());
+            System.exit(1);
+        } finally {
+            if(server != null)
+                server.termina();
         }
     }
 }
