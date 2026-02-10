@@ -1,10 +1,12 @@
 import java.io.*;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 public class Client {
     private final String nome;
 
     private Socket socket;
+
     private PrintWriter out;
     private BufferedReader in;
 
@@ -18,6 +20,9 @@ public class Client {
             inizializzaStream();
 
             return 1;
+        } catch (UnknownHostException e) {
+            Colori.PRINT_ERROR("Host non trovato: " + e.getMessage());
+            return 0;
         } catch (IOException e){
             Colori.PRINT_ERROR("Errore di connessione: " + e.getMessage());
             return 0;

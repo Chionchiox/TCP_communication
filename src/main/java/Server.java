@@ -87,6 +87,4 @@ public class Server {
             Colori.PRINT_ERROR("ERRORE I/O: " + e.getMessage());
         }
     }
-
-    public void printStato(){Colori.PRINT_COMUNICATION("STATO SERVER: " + stato);}
 }

@@ -16,11 +16,10 @@ public class MainClient {
 
         Colori.PRINT_COMUNICATION("Connesso al server.");
 
-        Scanner scan = new Scanner(System.in);
         String msg;
 
-        try {
-            while (true) {
+        try(Scanner scan = new Scanner(System.in)){
+            do{
                 System.out.println("Scrivi un messaggio: ");
                 msg = scan.nextLine();
 
@@ -28,15 +27,11 @@ public class MainClient {
 
                 String risposta = client.leggi();
                 System.out.println("Server dice: " + risposta);
-
-                if (msg.equalsIgnoreCase("exit"))
-                    break;
-            }
+            } while(!msg.equalsIgnoreCase("exit"));
         } catch (IOException e) {
             Colori.PRINT_ERROR("Errore I/O: " + e.getMessage());
         } finally {
             client.chiudi();
-            scan.close();
         }
     }
 }
